@@ -3,8 +3,10 @@ package com.polyllm.entities;
 import com.polyllm.enums.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serial;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -58,6 +60,29 @@ public class ConversationMessage extends AbstractEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = (o instanceof HibernateProxy hProxy)
+                ? hProxy.getHibernateLazyInitializer().getPersistentClass()
+                : o.getClass();
+        Class<?> thisEffectiveClass = (this instanceof HibernateProxy thisProxy)
+                ? thisProxy.getHibernateLazyInitializer().getPersistentClass()
+                : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        if (!(o instanceof ConversationMessage conversationMessage)) return false;
+        return getId() != null && Objects.equals(getId(), conversationMessage.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        if (this instanceof HibernateProxy hibernateProxy) {
+            return hibernateProxy.getHibernateLazyInitializer().getPersistentClass().hashCode();
+        }
+        return getClass().hashCode();
     }
 
 }
