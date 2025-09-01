@@ -14,6 +14,6 @@ public class BadRequestException extends PolyLLMException {
     private static final long serialVersionUID = -9110538031737589515L;
 
     public BadRequestException(String resourceName, String fieldName, Serializable fieldValue) {
-        super("already exists", resourceName, fieldName, fieldValue);
+        super("bad request for", resourceName, fieldName, fieldValue);
     }
 }
