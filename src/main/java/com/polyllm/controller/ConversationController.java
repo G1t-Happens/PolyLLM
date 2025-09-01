@@ -3,6 +3,8 @@ package com.polyllm.controller;
 import com.polyllm.entities.Conversation;
 import com.polyllm.entities.ConversationMessage;
 
+import com.polyllm.enums.LLMProvider;
+import com.polyllm.exception.BadRequestException;
 import com.polyllm.exception.ResourceNotFoundException;
 import com.polyllm.service.interfaces.ConversationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,8 @@ public class ConversationController {
     }
 
     @PostMapping
-    public Conversation createConversation(@RequestParam String llmProvider,
-                                           @RequestParam(value = "apiKey", required = false) String apiKey,
-                                           @RequestParam(value = "model", required = false) String model) {
-        return conversationService.createConversation(llmProvider);
+    public Conversation createConversation(@RequestParam LLMProvider llmProvider, @RequestParam String llmModel) throws BadRequestException {
+        return conversationService.createConversation(llmProvider, llmModel);
     }
 
     @GetMapping("/{id}")
