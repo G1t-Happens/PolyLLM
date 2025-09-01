@@ -1,5 +1,6 @@
 package com.polyllm.entities;
 
+import com.polyllm.enums.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -24,8 +25,9 @@ public class ConversationMessage extends AbstractEntity {
     @JoinColumn(name = "conversation_id", nullable = false)
     private Conversation conversation;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private String role;
+    private Role role;
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -42,11 +44,11 @@ public class ConversationMessage extends AbstractEntity {
         this.conversation = conversation;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

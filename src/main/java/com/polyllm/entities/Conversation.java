@@ -1,5 +1,6 @@
 package com.polyllm.entities;
 
+import com.polyllm.enums.LLMProvider;
 import jakarta.persistence.*;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -21,8 +22,9 @@ public class Conversation extends AbstractEntity {
     @Column(columnDefinition = "UUID", updatable = false, nullable = false)
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "llm_provider", nullable = false)
-    private String llmProvider;
+    private LLMProvider llmProvider;
 
     @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ConversationMessage> messages;
@@ -31,11 +33,11 @@ public class Conversation extends AbstractEntity {
         return id;
     }
 
-    public String getLlmProvider() {
+    public LLMProvider getLlmProvider() {
         return llmProvider;
     }
 
-    public void setLlmProvider(String llmProvider) {
+    public void setLlmProvider(LLMProvider llmProvider) {
         this.llmProvider = llmProvider;
     }
 
