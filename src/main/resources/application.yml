@@ -1,0 +1,71 @@
+# Server configuration
+server:
+  port: 8089                # Server Port
+
+# Spring framework related configuration
+spring:
+  application:
+    name: polyllm
+
+  # Datasource configuration for database connection
+  datasource:
+    url: ${DB_URL}           # Database URL from environment variable
+    username: ${DB_USER}     # Database username from environment variable
+    password: ${DB_PASSWORD} # Database password from environment variable
+
+    hikari: # Connection pool settings using HikariCP (default in Spring Boot)
+      maximum-pool-size: 10  # Max number of connections in the pool
+      minimum-idle: 5        # Minimum idle connections in the pool
+
+  # JPA / Hibernate settings
+  jpa:
+    hibernate:
+      ddl-auto: update       # Automatically update the schema (use with caution in production)
+    show-sql: false          # Disable SQL logging in production (set true for debugging)
+    open-in-view: false      # Disable Open Session in a View pattern (recommended for performance)
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC     # Set JDBC timezone to UTC for consistency
+
+# Logging configuration
+logging:
+  level:
+    com.polyllm: ERROR       # Log level for your application package
+  file:
+    name: logs/polyllm.log   # Log file location and name
+
+# Custom API configuration
+api:
+  base-path: /api/v1         # Base path for your REST API endpoints
+
+
+# Environment variables (.env) are the primary source for all configuration values.
+# This application.yml provides fallback values **only** for base URLs if environment variables are missing.
+# API keys **must NOT** be set here and are required to be provided exclusively via environment variables for security reasons.
+llm:
+  openai:
+    base-url: ${LLM_OPENAI_API_URL:https://api.openai.com/v1}
+    api-key: ${LLM_OPENAI_API_KEY}
+
+  gemini:
+    base-url: ${LLM_GEMINI_API_URL:https://api.gemini.com/api}
+    api-key: ${LLM_GEMINI_API_KEY}
+
+  claude:
+    base-url: ${LLM_CLAUDE_API_URL:https://api.anthropic.com/v1}
+    api-key: ${LLM_CLAUDE_API_KEY}
+
+  mistral:
+    base-url: ${LLM_MISTRAL_API_URL:https://api.mistral.com/v1}
+    api-key: ${LLM_MISTRAL_API_KEY}
+
+  # Timeout values are specified in milliseconds.
+  # They must be within these ranges to prevent misconfiguration:
+  #   - Connection timeout (LLM_TIMEOUT_CONNECT): between 100 ms and 10,000 ms (10 seconds). Default: 3000 ms
+  #   - Read timeout (LLM_TIMEOUT_READ): between 100 ms and 60,000 ms (60 seconds). Default: 5000 ms
+  #
+  # Providing values outside these ranges will cause the application to fail validation during startup.
+  timeout:
+    connect: ${LLM_TIMEOUT_CONNECT:3000}
+    read: ${LLM_TIMEOUT_READ:5000}

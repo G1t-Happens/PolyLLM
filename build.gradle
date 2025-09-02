@@ -33,7 +33,6 @@ dependencies {
 	implementation 'org.flywaydb:flyway-database-postgresql'
 	implementation 'org.postgresql:postgresql'
 	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
